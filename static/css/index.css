@@ -1,0 +1,29 @@
+#header {
+    background: #2c3e50; /* Cor de fundo do cabeçalho */
+    color: #ffffff;
+}
+
+#header a:link, #header a:visited {
+    color: #ffffff;
+}
+
+.module h2, .module caption, .inline-group h2 {
+    background: #3498db;
+}
+
+div.breadcrumbs {
+    background: #34495e;
+}
+
+.button, input[type=submit], input[type=button], .submit-row input, a.button {
+    background: #3498db;
+}
+
+.button:hover, input[type=submit]:hover, input[type=button]:hover,
+.submit-row input:hover, a.button:hover {
+    background: #2980b9;
+}
+
+.object-tools a:hover, .object-tools a:focus {
+    background-color: #2980b9;
+}
