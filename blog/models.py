@@ -1,3 +1,4 @@
+from django.core.exceptions import PermissionDenied
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.utils import timezone
@@ -47,6 +48,10 @@ class Usuario(AbstractUser):
     
     def is_admin(self):
         return self.tipo_usuario == self.ADMIN
+    
+    def pode_criar_artigo(self):
+        """Verifica se o usuário pode criar artigos"""
+        return self.is_redator() or self.is_admin()
     
     class Meta:
         verbose_name = 'Usuário'
@@ -115,6 +120,13 @@ class Artigo(models.Model):
     def __str__(self):
         return self.titulo
     
+    #funcao para impedir no usuario de criar artigo 
+    def save(self, *args, **kwargs):
+        """Sobrescreve o método save para validar permissões"""
+        if not self.autor.pode_criar_artigo():
+            raise PermissionDenied("Usuário não tem permissão para criar artigos.")
+        super().save(*args, **kwargs)
+    
     class Meta:
         verbose_name = 'Artigo'
         verbose_name_plural = 'Artigos'
@@ -147,8 +159,7 @@ class Curtida(models.Model):
     class Meta:
         verbose_name = 'Curtida'
         verbose_name_plural = 'Curtidas'
-        # Garante que um usuário só pode curtir um artigo uma vez
-        unique_together = ('artigo', 'usuario')
+        unique_together = ('artigo', 'usuario') # só pode curtir um artigo uma vez
 
 
 class Recomendacao(models.Model):
