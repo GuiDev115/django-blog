@@ -52,13 +52,15 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-### 3. Configure o banco de dados
+### 3. Configure e instale o cofig de ambiente o banco de dados
 
 Crie as migrações e aplique-as para configurar o banco de dados:
 
 ```bash
-python manage.py makemigrations
-python manage.py migrate
+pip install -r requirements.txt
+
+python3 manage.py makemigrations
+python3 manage.py migrate
 ```
 
 ### 5. Crie um superusuário
