@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial do Blog</title>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+    {% include 'blog/base.html' %}
+
+    <div class="container mx-auto mt-10">
+        <h1 class="text-3xl font-bold mb-5">Bem-vindo ao Blog</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {% for artigo in artigos %}
+                <div class="bg-white shadow-md rounded-lg p-5">
+                    <h2 class="text-xl font-semibold">{{ artigo.titulo }}</h2>
+                    <p class="text-gray-700">{{ artigo.conteudo|truncatewords:30 }}</p>
+                    <a href="{% url 'artigo_detail' artigo.id %}" class="text-blue-500 hover:underline">Leia mais</a>
+                </div>
+            {% empty %}
+                <p class="text-gray-500">Nenhum artigo encontrado.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

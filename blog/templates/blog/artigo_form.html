@@ -1,0 +1,208 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}
+    {% if form.instance.pk %}Editar Artigo{% else %}Criar Novo Artigo{% endif %} - Blog
+{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <!-- Cabeçalho -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6 p-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">
+                    {% if form.instance.pk %}
+                        <span class="flex items-center">
+                            <svg class="w-8 h-8 mr-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                            </svg>
+                            Editar Artigo
+                        </span>
+                    {% else %}
+                        <span class="flex items-center">
+                            <svg class="w-8 h-8 mr-3 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Criar Novo Artigo
+                        </span>
+                    {% endif %}
+                </h1>
+                <p class="text-gray-600 mt-2">
+                    {% if form.instance.pk %}
+                        Atualize as informações do seu artigo
+                    {% else %}
+                        Compartilhe suas ideias com nossa comunidade
+                    {% endif %}
+                </p>
+            </div>
+            <div class="hidden md:block">
+                <div class="text-right text-sm text-gray-500">
+                    <p>Autor: <span class="font-medium text-gray-700">{{ user.username }}</span></p>
+                    {% if form.instance.pk %}
+                        <p>Criado em: {{ form.instance.data_criacao|date:"d/m/Y H:i" }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formulário -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+        <form method="POST" enctype="multipart/form-data" class="divide-y divide-gray-200">
+            {% csrf_token %}
+            
+            <!-- Corpo do Formulário -->
+            <div class="p-6 space-y-6">
+                <!-- Título -->
+                <div>
+                    <label for="{{ form.titulo.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                        <span class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                            </svg>
+                            Título do Artigo
+                        </span>
+                    </label>
+                    <input 
+                        type="text" 
+                        name="{{ form.titulo.name }}" 
+                        id="{{ form.titulo.id_for_label }}"
+                        value="{{ form.titulo.value|default:'' }}"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 text-lg"
+                        placeholder="Digite um título atraente para seu artigo..."
+                        required
+                    >
+                    {% if form.titulo.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.titulo.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Conteúdo -->
+                <div>
+                    <label for="{{ form.conteudo.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                        <span class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Conteúdo do Artigo
+                        </span>
+                    </label>
+                    <textarea 
+                        name="{{ form.conteudo.name }}" 
+                        id="{{ form.conteudo.id_for_label }}"
+                        rows="12"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 resize-y"
+                        placeholder="Escreva o conteúdo do seu artigo aqui..."
+                        required
+                    >{{ form.conteudo.value|default:'' }}</textarea>
+                    {% if form.conteudo.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.conteudo.errors.0 }}</p>
+                    {% endif %}
+                    <p class="mt-2 text-sm text-gray-500">
+                        💡 Dica: Use parágrafos para organizar melhor seu conteúdo
+                    </p>
+                </div>
+
+                <!-- Categorias -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-3">
+                        <span class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                            </svg>
+                            Categorias
+                        </span>
+                    </label>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        {% for choice in form.categorias %}
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition duration-200">
+                                {{ choice.tag }}
+                                <span class="ml-2 text-sm text-gray-700">{{ choice.choice_label }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                    {% if form.categorias.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.categorias.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Status de Publicação -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <label class="flex items-center cursor-pointer">
+                        {{ form.publicado }}
+                        <span class="ml-3 text-sm font-medium text-gray-700">
+                            <span class="flex items-center">
+                                <svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Publicar artigo imediatamente
+                            </span>
+                        </span>
+                    </label>
+                    <p class="mt-1 text-xs text-gray-500 ml-7">
+                        Se desmarcado, o artigo ficará como rascunho
+                    </p>
+                </div>
+            </div>
+
+            <!-- Rodapé do Formulário -->
+            <div class="px-6 py-4 bg-gray-50 rounded-b-lg">
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-3 sm:space-y-0">
+                    <!-- Botões de Ação -->
+                    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
+                        <button type="submit" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200 shadow-sm">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            {% if form.instance.pk %}Atualizar Artigo{% else %}Publicar Artigo{% endif %}
+                        </button>
+                        
+                        <a href="{% url 'artigo_list' %}" class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Cancelar
+                        </a>
+                    </div>
+
+                    <!-- Informações Adicionais -->
+                    <div class="text-sm text-gray-500">
+                        <span class="flex items-center">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Rascunhos são salvos automaticamente
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    /* Customização para checkboxes */
+    input[type="checkbox"] {
+        width: 1rem;
+        height: 1rem;
+        color: #2563eb;
+        border-color: #D1D5DB;
+        border-radius: 0.25rem;
+    }
+    input[type="checkbox"]:focus {
+        --tw-ring-color: #3B82F6;
+    }
+    
+    /* Efeito hover nos campos */
+    input:hover, textarea:hover {
+        border-color: #9CA3AF;
+    }
+    
+    /* Foco melhorado */
+    input:focus, textarea:focus {
+        --tw-ring-width: 2px;
+        --tw-ring-color: #3B82F6;
+        border-color: transparent;
+    }
+</style>
+{% endblock %}

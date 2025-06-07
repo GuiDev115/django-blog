@@ -1,0 +1,31 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<div class="container mx-auto mt-10">
+    <h1 class="text-3xl font-bold mb-5">{{ categoria.nome }}</h1>
+    
+    {% if categoria.descricao %}
+        <p class="text-gray-700 mb-6">{{ categoria.descricao }}</p>
+    {% endif %}
+    
+    <h2 class="text-2xl font-semibold mb-4">Artigos nesta categoria:</h2>
+    
+    <div class="mt-5">
+        {% for artigo in artigos %}
+            <div class="bg-white shadow-md rounded-lg p-5 mb-5">
+                <h3 class="text-xl font-semibold">
+                    <a href="{% url 'artigo_detail' artigo.id %}" class="text-blue-600 hover:underline">{{ artigo.titulo }}</a>
+                </h3>
+                <p class="text-gray-700 mt-2">{{ artigo.conteudo|truncatewords:30 }}</p>
+                <p class="text-sm text-gray-500 mt-3">Por: {{ artigo.autor.username }} - {{ artigo.data_criacao|date:"d/m/Y" }}</p>
+            </div>
+        {% empty %}
+            <p class="text-gray-500">Nenhum artigo encontrado nesta categoria.</p>
+        {% endfor %}
+    </div>
+    
+    <div class="mt-6">
+        <a href="{% url 'categoria_list' %}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Voltar às Categorias</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<div class="container mx-auto mt-10">
+    <h1 class="text-3xl font-bold mb-5">Lista de Artigos</h1>
+    <a href="{% url 'artigo_create' %}" class="bg-blue-500 text-white px-4 py-2 rounded">Criar Novo Artigo</a>
+    <div class="mt-5">
+        {% for artigo in artigos %}
+            <div class="bg-white shadow-md rounded-lg p-5 mb-5">
+                <h2 class="text-xl font-semibold">
+                    <a href="{% url 'artigo_detail' artigo.id %}">{{ artigo.titulo }}</a>
+                </h2>
+                <p class="text-gray-700">{{ artigo.conteudo|truncatewords:30 }}</p>
+                <div class="mt-3">
+                    <a href="{% url 'artigo_update' artigo.id %}" class="text-yellow-500">Editar</a>
+                    <form action="{% url 'artigo_delete' artigo.id %}" method="POST" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="text-red-500">Deletar</button>
+                    </form>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-gray-500">Nenhum artigo encontrado.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

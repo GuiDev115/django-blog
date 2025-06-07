@@ -23,7 +23,6 @@ class Usuario(AbstractUser):
         default=LEITOR,
     )
     
-    # Para compatibilidade com AbstractUser
     groups = models.ManyToManyField(
         Group,
         verbose_name='groups',
@@ -147,7 +146,6 @@ class Curtida(models.Model):
     class Meta:
         verbose_name = 'Curtida'
         verbose_name_plural = 'Curtidas'
-        # Garante que um usuário só pode curtir um artigo uma vez
         unique_together = ('artigo', 'usuario')
 
 
@@ -161,5 +159,4 @@ class Recomendacao(models.Model):
     class Meta:
         verbose_name = 'Recomendação'
         verbose_name_plural = 'Recomendações'
-        # Um redator só pode recomendar um artigo uma vez
         unique_together = ('artigo', 'redator')

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Meu Blog{% endblock %}</title>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <header class="bg-white shadow">
+        <div class="container mx-auto px-4 py-4">
+            <h1 class="text-2xl font-bold">Meu Blog</h1>
+            <nav class="mt-2">
+                <ul class="flex space-x-4">
+                    <li><a href="{% url 'blog:index' %}" class="text-blue-500 hover:underline">Início</a></li>
+                    <li><a href="{% url 'blog:artigo_list' %}" class="text-blue-500 hover:underline">Artigos</a></li>
+                    <li><a href="{% url 'blog:categoria_list' %}" class="text-blue-500 hover:underline">Categorias</a></li>
+                    <li><a href="{% url 'blog:login' %}" class="text-blue-500 hover:underline">Login</a></li>
+                    <li><a href="{% url 'blog:register' %}" class="text-blue-500 hover:underline">Registrar</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-6">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="bg-white shadow mt-6">
+        <div class="container mx-auto px-4 py-4 text-center">
+            <p class="text-gray-600">© 2023 Meu Blog. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<div class="container mx-auto mt-10">
+    <h1 class="text-3xl font-bold mb-5">Lista de Categorias</h1>
+    
+    <div class="mt-5">
+        {% for categoria in categorias %}
+            <div class="bg-white shadow-md rounded-lg p-5 mb-5">
+                <h2 class="text-xl font-semibold">
+                    <a href="{% url 'categoria_detail' categoria.id %}" class="text-blue-600 hover:underline">{{ categoria.nome }}</a>
+                </h2>
+                {% if categoria.descricao %}
+                    <p class="text-gray-700 mt-2">{{ categoria.descricao }}</p>
+                {% endif %}
+                <p class="text-sm text-gray-500 mt-3">
+                    {{ categoria.artigo_set.count }} artigo{{ categoria.artigo_set.count|pluralize }}
+                </p>
+            </div>
+        {% empty %}
+            <p class="text-gray-500">Nenhuma categoria encontrada.</p>
+        {% endfor %}
+    </div>
+    
+    <div class="mt-5">
+        <a href="{% url 'index' %}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Voltar ao Início</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{
+  "name": "django-blog",
+  "version": "1.0.0",
+  "description": "A Django blog project with Tailwind CSS for styling.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tailwindcss build static/css/style.css -o static/css/output.css",
+    "watch": "tailwindcss -i static/css/style.css -o static/css/output.css --watch"
+  },
+  "dependencies": {
+    "tailwindcss": "^3.0.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.0.0",
+    "postcss": "^8.0.0"
+  },
+  "keywords": [
+    "django",
+    "blog",
+    "tailwindcss"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}
