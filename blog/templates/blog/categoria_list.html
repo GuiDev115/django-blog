@@ -2,7 +2,12 @@
 
 {% block content %}
 <div class="container mx-auto mt-10">
-    <h1 class="text-3xl font-bold mb-5">Lista de Categorias</h1>
+    <div class="flex justify-between items-center mb-5">
+        <h1 class="text-3xl font-bold">Lista de Categorias</h1>
+        <a href="{% url 'categoria_create' %}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            + Nova Categoria
+        </a>
+    </div>
     
     <div class="mt-5">
         {% for categoria in categorias %}

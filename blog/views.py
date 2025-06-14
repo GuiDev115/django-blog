@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Artigo, Categoria, Usuario
-from .forms import ArtigoForm, CustomUserCreationForm
+from .forms import ArtigoForm, CustomUserCreationForm, CategoriaForm
 
 def index(request):
     artigos = Artigo.objects.filter(publicado=True).order_by('-data_criacao')
@@ -29,7 +29,7 @@ def artigo_create(request):
             artigo = form.save(commit=False)
             artigo.autor = request.user
             artigo.save()
-            form.save_m2m()  # Para salvar categorias many-to-many
+            form.save_m2m() 
             return redirect('artigo_list')
     else:
         form = ArtigoForm()
@@ -59,10 +59,32 @@ def categoria_list(request):
     categorias = Categoria.objects.all()
     return render(request, 'blog/categoria_list.html', {'categorias': categorias})
 
-def categoria_detail(request, pk):
-    categoria = get_object_or_404(Categoria, pk=pk)
-    artigos = Artigo.objects.filter(categorias=categoria, publicado=True)
+
+def categoria_detail(request, categoria_id):
+    categoria = get_object_or_404(Categoria, id=categoria_id)
+    
+    try:
+        artigos = categoria.artigo_set.all()
+    except AttributeError:
+        try:
+            artigos = categoria.artigos.all()
+        except AttributeError:
+            artigos = Artigo.objects.filter(categoria=categoria)
+    
     return render(request, 'blog/categoria_detail.html', {'categoria': categoria, 'artigos': artigos})
+
+
+def categoria_create(request):
+    if request.method == 'POST':
+        form = CategoriaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('categoria_list')
+    else:
+        form = CategoriaForm()
+    
+    return render(request, 'blog/categoria_create.html', {'form': form})
+
 
 # Views de autenticação
 def login_view(request):
