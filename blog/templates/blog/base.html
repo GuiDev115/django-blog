@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>{% block title %}Meu Blog{% endblock %}</title>
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="bg-gradient-to-br from-indigo-50 via-white to-cyan-50 min-h-screen font-inter">
@@ -145,8 +145,9 @@
     {% endif %}
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 py-8">
+    <main class="">
         {% block content %}
+        <!-- Content will be injected here -->
         {% endblock %}
     </main>
 
