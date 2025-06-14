@@ -26,7 +26,7 @@
     
     <div class="mt-6">
         <a href="{% url 'artigo_list' %}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Voltar à Lista</a>
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and user.is_admin or user.is_authenticated and user.is_redator and artigo.autor == user %}
             <a href="{% url 'artigo_update' artigo.id %}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 ml-2">Editar</a>
             <a href="{% url 'artigo_delete' artigo.id %}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 ml-2">Deletar</a>
         {% endif %}

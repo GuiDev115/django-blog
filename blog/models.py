@@ -38,12 +38,15 @@ class Usuario(AbstractUser):
         related_query_name='user',
     )
     
+    @property
     def is_leitor(self):
         return self.tipo_usuario == self.LEITOR
-        
+    
+    @property
     def is_redator(self):
         return self.tipo_usuario == self.REDATOR
     
+    @property
     def is_admin(self):
         return self.tipo_usuario == self.ADMIN
     

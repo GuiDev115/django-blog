@@ -3,7 +3,9 @@
 {% block content %}
 <div class="container mx-auto mt-10">
     <h1 class="text-3xl font-bold mb-5">Lista de Artigos</h1>
-    <a href="{% url 'artigo_create' %}" class="bg-blue-500 text-white px-4 py-2 rounded">Criar Novo Artigo</a>
+    {% if user.is_authenticated and user.is_redator or user.is_authenticated and user.is_admin %}
+        <a href="{% url 'artigo_create' %}" class="bg-blue-500 text-white px-4 py-2 rounded">Criar Novo Artigo</a>
+    {% endif %}
     <div class="mt-5">
         {% for artigo in artigos %}
             <div class="bg-white shadow-md rounded-lg p-5 mb-5">
@@ -12,11 +14,13 @@
                 </h2>
                 <p class="text-gray-700">{{ artigo.conteudo|truncatewords:30 }}</p>
                 <div class="mt-3">
-                    <a href="{% url 'artigo_update' artigo.id %}" class="text-yellow-500">Editar</a>
-                    <form action="{% url 'artigo_delete' artigo.id %}" method="POST" class="inline">
-                        {% csrf_token %}
-                        <button type="submit" class="text-red-500">Deletar</button>
-                    </form>
+                    {% if user.is_authenticated and user.is_admin or user.is_authenticated and user.is_redator and artigo.autor == user %}
+                        <a href="{% url 'artigo_update' artigo.id %}" class="text-yellow-500">Editar</a>
+                        <form action="{% url 'artigo_delete' artigo.id %}" method="POST" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="text-red-500">Deletar</button>
+                        </form>
+                    {% endif %}
                 </div>
             </div>
         {% empty %}

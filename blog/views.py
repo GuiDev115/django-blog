@@ -19,6 +19,8 @@ def artigo_detail(request, pk):
 
 @login_required
 def artigo_create(request):
+    if not request.user.is_redator and not request.user.is_admin:
+        return render(request, 'blog/erro_permissao.html', status=403)
     if request.method == 'POST':
         form = ArtigoForm(request.POST)
         if form.is_valid():
@@ -34,6 +36,8 @@ def artigo_create(request):
 @login_required
 def artigo_update(request, pk):
     artigo = get_object_or_404(Artigo, pk=pk)
+    if not (request.user.is_admin or (request.user.is_redator and artigo.autor == request.user)):
+        return render(request, 'blog/erro_permissao.html', status=403)
     if request.method == 'POST':
         form = ArtigoForm(request.POST, instance=artigo)
         if form.is_valid():
@@ -46,6 +50,8 @@ def artigo_update(request, pk):
 @login_required
 def artigo_delete(request, pk):
     artigo = get_object_or_404(Artigo, pk=pk)
+    if not (request.user.is_admin or (request.user.is_redator and artigo.autor == request.user)):
+        return render(request, 'blog/erro_permissao.html', status=403)
     if request.method == 'POST':
         artigo.delete()
         return redirect('artigo_list')
