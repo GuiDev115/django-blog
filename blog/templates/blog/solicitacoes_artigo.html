@@ -1,0 +1,39 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Solicitações de Artigos{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto mt-8 bg-white p-6 rounded-lg shadow">
+    <h1 class="text-2xl font-bold mb-6">Solicitações de Artigos</h1>
+
+    {% if artigos %}
+        <ul>
+            {% for artigo in artigos %}
+            <li class="mb-6 border-b pb-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="font-semibold">{{ artigo.titulo }}</span>
+                        <div class="text-gray-700 mt-2">
+                            {{ artigo.conteudo|truncatewords:30 }}
+                        </div>
+                        <div class="text-gray-400 text-xs mt-1">
+                            Criado em: {{ artigo.data_criacao|date:"d/m/Y H:i" }}<br>
+                            Autor: {{ artigo.autor.username }}
+                        </div>
+                    </div>
+                    <form method="post" class="ml-4">
+                        {% csrf_token %}
+                        <input type="hidden" name="artigo_id" value="{{ artigo.id }}">
+                        <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition">
+                            Aprovar Publicação
+                        </button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-gray-600">Nenhuma solicitação de publicação pendente.</p>
+    {% endif %}
+</div>
+{% endblock %}

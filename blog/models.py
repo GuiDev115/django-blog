@@ -87,6 +87,42 @@ class SolicitacaoRedator(models.Model):
         verbose_name = 'Solicitação de Redator'
         verbose_name_plural = 'Solicitações de Redator'
 
+class SolicitacaoArtigo(models.Model):
+    """
+    Modelo para representar solicitações de criação de artigos por usuários
+    """
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='solicitacoes_artigo')
+    titulo = models.CharField(max_length=200, verbose_name='Título do Artigo')
+    descricao = models.TextField(verbose_name='Descrição/Justificativa')
+    data_solicitacao = models.DateTimeField(auto_now_add=True)
+    aprovada = models.BooleanField(default=False)
+    data_aprovacao = models.DateTimeField(null=True, blank=True)
+    aprovada_por = models.ForeignKey(
+        Usuario,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='solicitacoes_artigo_aprovadas'
+    )
+
+    def aprovar(self, admin_usuario):
+        """
+        Método para aprovar uma solicitação de artigo
+        """
+        if admin_usuario.is_staff:  # ou admin_usuario.is_admin, dependendo do seu sistema
+            self.aprovada = True
+            self.data_aprovacao = timezone.now()
+            self.aprovada_por = admin_usuario
+            self.save()
+            return True
+        return False
+
+    class Meta:
+        verbose_name = 'Solicitação de Artigo'
+        verbose_name_plural = 'Solicitações de Artigo'
+
+    def __str__(self):
+        return f"{self.titulo} - {self.usuario.username}"
 
 class Categoria(models.Model):
     """Categoria para classificar os artigos"""
