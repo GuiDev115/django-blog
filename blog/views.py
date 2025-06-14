@@ -6,8 +6,12 @@ from .models import Artigo, Categoria, Usuario
 from .forms import ArtigoForm, CustomUserCreationForm
 
 def index(request):
-    artigos = Artigo.objects.all()
-    return render(request, 'blog/artigo_list.html', {'artigos': artigos})
+    artigos = Artigo.objects.filter(publicado=True).order_by('-data_criacao')
+    return render(request, 'blog/index.html', {'artigos': artigos})
+
+def post_detail(request, pk):
+    artigo = get_object_or_404(Artigo, pk=pk, publicado=True)
+    return render(request, 'blog/artigo.html', {'artigo': artigo})
 
 def artigo_list(request):
     artigos = Artigo.objects.all()
@@ -57,7 +61,7 @@ def categoria_list(request):
 
 def categoria_detail(request, pk):
     categoria = get_object_or_404(Categoria, pk=pk)
-    artigos = Artigo.objects.filter(categorias=categoria)
+    artigos = Artigo.objects.filter(categorias=categoria, publicado=True)
     return render(request, 'blog/categoria_detail.html', {'categoria': categoria, 'artigos': artigos})
 
 # Views de autenticação

@@ -57,8 +57,8 @@ source venv/bin/activate
 Crie as migrações e aplique-as para configurar o banco de dados:
 
 ```bash
-python manage.py makemigrations
-python manage.py migrate
+python3 manage.py makemigrations
+python3 manage.py migrate
 ```
 
 ### 5. Crie um superusuário
@@ -73,5 +73,5 @@ python3 manage.py createsuperuser
 Inicie o servidor local:
 
 ```bash
-python manage.py runserver
+python3 manage.py runserver
 ```
