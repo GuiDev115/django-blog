@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
-from .models import Artigo, Categoria, Usuario, SolicitacaoRedator
+from .models import Artigo, Categoria, Usuario, SolicitacaoRedator, Comentario, Curtida
 from .forms import ArtigoForm, CustomUserCreationForm, CategoriaForm
 
 def index(request):
@@ -129,3 +129,22 @@ def solicitacoes_redator(request):
         solicitacao.aprovar(request.user)
         return redirect('solicitacoes_redator')
     return render(request, 'blog/solicitacoes_redator.html', {'solicitacoes': solicitacoes})
+
+@login_required
+def comentar_artigo(request, pk):
+    artigo = get_object_or_404(Artigo, pk=pk)
+    if request.method == 'POST':
+        conteudo = request.POST.get('conteudo')
+        if conteudo:
+            Comentario.objects.create(
+                artigo=artigo,
+                autor=request.user,
+                conteudo=conteudo
+            )
+    return redirect('artigo_detail', pk=pk)
+
+@login_required
+def curtir_artigo(request, pk):
+    artigo = get_object_or_404(Artigo, pk=pk)
+    Curtida.objects.get_or_create(artigo=artigo, usuario=request.user)
+    return redirect('artigo_detail', pk=pk)

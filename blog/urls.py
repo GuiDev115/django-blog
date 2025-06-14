@@ -14,6 +14,8 @@ urlpatterns = [
     path('artigo/<int:pk>/editar/', views.artigo_update, name='artigo_update'),
     path('artigo/<int:pk>/deletar/', views.artigo_delete, name='artigo_delete'),
     path('solicitacoes_redator/', views.solicitacoes_redator, name='solicitacoes_redator'),
+    path('artigo/<int:pk>/comentar/', views.comentar_artigo, name='comentar_artigo'),
+    path('artigo/<int:pk>/curtir/', views.curtir_artigo, name='curtir_artigo'),
 
     
     # URLs de categorias
