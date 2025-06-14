@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
-from .models import Artigo, Categoria, Usuario
+from .models import Artigo, Categoria, Usuario, SolicitacaoRedator
 from .forms import ArtigoForm, CustomUserCreationForm, CategoriaForm
 
 def index(request):
@@ -20,6 +21,9 @@ def artigo_list(request):
 def artigo_detail(request, pk):
     artigo = get_object_or_404(Artigo, pk=pk)
     return render(request, 'blog/artigo_detail.html', {'artigo': artigo})
+
+def is_admin(user):
+    return user.is_authenticated and user.is_admin()
 
 @login_required
 def artigo_create(request):
@@ -114,3 +118,14 @@ def register(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'blog/register.html', {'form': form})
+
+@login_required
+@user_passes_test(is_admin)
+def solicitacoes_redator(request):
+    solicitacoes = SolicitacaoRedator.objects.filter(aprovada=False)
+    if request.method == 'POST':
+        solicitacao_id = request.POST.get('solicitacao_id')
+        solicitacao = SolicitacaoRedator.objects.get(id=solicitacao_id)
+        solicitacao.aprovar(request.user)
+        return redirect('solicitacoes_redator')
+    return render(request, 'blog/solicitacoes_redator.html', {'solicitacoes': solicitacoes})
