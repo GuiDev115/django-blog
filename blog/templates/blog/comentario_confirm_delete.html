@@ -1,0 +1,42 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Excluir Comentário{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-10 max-w-md">
+    <div class="bg-white shadow-lg rounded-lg p-8">
+        <h1 class="text-2xl font-bold mb-6 text-red-600">Confirmar Exclusão</h1>
+        
+        <div class="mb-6">
+            <p class="text-gray-700 mb-4">
+                Tem certeza de que deseja excluir este comentário?
+            </p>
+            <div class="p-4 bg-gray-50 rounded-lg border">
+                <p class="text-sm text-gray-600 mb-2">
+                    <strong>Artigo:</strong> {{ comentario.artigo.titulo }}
+                </p>
+                <p class="text-gray-800">{{ comentario.conteudo|truncatewords:20 }}</p>
+            </div>
+        </div>
+        
+        <div class="flex gap-4">
+            <form method="post">
+                {% csrf_token %}
+                <button 
+                    type="submit" 
+                    class="bg-red-500 text-white px-6 py-2 rounded-lg font-medium hover:bg-red-600 transition duration-200"
+                >
+                    Sim, Excluir
+                </button>
+            </form>
+            
+            <a 
+                href="{% url 'artigo_detail' comentario.artigo.pk %}" 
+                class="bg-gray-500 text-white px-6 py-2 rounded-lg font-medium hover:bg-gray-600 transition duration-200"
+            >
+                Cancelar
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Solicitar ser Redator{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-10 max-w-2xl">
+    <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">Solicitar ser Redator</h1>
+    
+    <div class="bg-white shadow-lg rounded-lg p-8">
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Por que você quer ser redator?</h2>
+            <p class="text-gray-600 mb-4">
+                Como redator, você poderá criar e submeter artigos para aprovação. 
+                Conte-nos sua motivação e experiência.
+            </p>
+        </div>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-6">
+                <label for="motivacao" class="block text-sm font-medium text-gray-700 mb-2">
+                    Motivação *
+                </label>
+                <textarea 
+                    name="motivacao" 
+                    id="motivacao" 
+                    rows="6" 
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="Descreva sua experiência, áreas de interesse e por que gostaria de contribuir como redator..."
+                ></textarea>
+            </div>
+            
+            <div class="flex gap-4">
+                <button 
+                    type="submit" 
+                    class="bg-green-500 text-white px-6 py-2 rounded-lg font-medium hover:bg-green-600 transition duration-200"
+                >
+                    Enviar Solicitação
+                </button>
+                
+                <a 
+                    href="{% url 'index' %}" 
+                    class="bg-gray-500 text-white px-6 py-2 rounded-lg font-medium hover:bg-gray-600 transition duration-200"
+                >
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
