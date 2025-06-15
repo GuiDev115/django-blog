@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 
-from .models import Artigo, Categoria, Usuario, SolicitacaoRedator,SolicitacaoArtigo, Comentario, Curtida
+from .models import Artigo, Categoria, Usuario, SolicitacaoRedator, Comentario, Curtida, SolicitacaoArtigo
+
 from .forms import ArtigoForm, CustomUserCreationForm, CategoriaForm
 
 def index(request):
@@ -133,6 +134,20 @@ def solicitacoes_redator(request):
 
 @login_required
 
+@user_passes_test(is_admin)
+def solicitacoes_artigo(request):
+    artigos_pendentes = Artigo.objects.filter(publicado=False).order_by('-data_criacao')
+
+    if request.method == 'POST':
+        artigo_id = request.POST.get('artigo_id')
+        artigo = Artigo.objects.get(id=artigo_id)
+        artigo.publicado = True
+        artigo.save()
+        return redirect('solicitacoes_artigo')
+
+    return render(request, 'blog/solicitacoes_artigo.html', {'artigos': artigos_pendentes})
+
+
 def comentar_artigo(request, pk):
     artigo = get_object_or_404(Artigo, pk=pk)
     if request.method == 'POST':
@@ -150,3 +165,4 @@ def curtir_artigo(request, pk):
     artigo = get_object_or_404(Artigo, pk=pk)
     Curtida.objects.get_or_create(artigo=artigo, usuario=request.user)
     return redirect('artigo_detail', pk=pk)
+

@@ -1,67 +1,46 @@
-# Python bytecode
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-
-# Arquivos do Django
+# Django
 *.log
 *.pot
 *.pyc
+__pycache__/
+local_settings.py
 db.sqlite3
 db.sqlite3-journal
 media/
 staticfiles/
 
-# Arquivos de ambiente virtual
+# Virtual Environment
 venv/
 env/
-ENV/
 .env
-.venv
 
-# Arquivos IDE / Editores
-.idea/
+# IDE
 .vscode/
+.idea/
 *.swp
 *.swo
-*~
+
+# OS
 .DS_Store
+Thumbs.db
 
-# Arquivos de configuração local
-local_settings.py
-settings_local.py
-
-# Arquivos de cache
-.coverage
-.coverage.*
-htmlcov/
-.pytest_cache/
-.tox/
-.nox/
-coverage.html
-coverage.xml
-nosetests.xml
-*.cover
-*.py,cover
-
-# Arquivos de distribuição
-dist/
+# Python
+*.py[cod]
+*$py.class
+*.so
+.Python
 build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
 *.egg-info/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# Zone.Identifier files (Windows)
-*Zone.Identifier
-
-# Diretórios de migrations - opcional
-# Comentar se quiser incluir migrations no repositório
-# */migrations/*.py
-# !*/migrations/__init__.py
-
-# Arquivos temporários
-.tmp/
-tmp/
+.installed.cfg
+*.egg
