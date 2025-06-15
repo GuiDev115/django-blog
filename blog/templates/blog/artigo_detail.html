@@ -24,12 +24,50 @@
         {% endif %}
     </article>
     
-    <div class="mt-6">
-        <a href="{% url 'artigo_list' %}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">Voltar à Lista</a>
+    <div class="mt-6 flex flex-wrap items-center justify-between gap-2">
+        <div class="flex flex-wrap items-center gap-2">
+            <a href="{% url 'artigo_list' %}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 h-10 align-middle">Voltar à Lista</a>
+            {% if user.is_authenticated %}
+                {% if user.is_admin or user == artigo.autor %}
+                <a href="{% url 'artigo_update' artigo.id %}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 h-10 align-middle">Editar</a>
+                <a href="{% url 'artigo_delete' artigo.id %}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 h-10 align-middle">Deletar</a>
+                {% endif %}
+            {% endif %}
+        </div>
         {% if user.is_authenticated %}
-            <a href="{% url 'artigo_update' artigo.id %}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 ml-2">Editar</a>
-            <a href="{% url 'artigo_delete' artigo.id %}" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 ml-2">Deletar</a>
+            <form method="post" action="{% url 'curtir_artigo' artigo.pk %}" class="m-0 p-0">
+                {% csrf_token %}
+                <button type="submit" class="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 h-10 align-middle m-0">
+                    Curtir ({{ artigo.curtidas.count }})
+                </button>
+            </form>
         {% endif %}
     </div>
+
+    <div class="mt-8">
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'comentar_artigo' artigo.pk %}" class="mb-4">
+                {% csrf_token %}
+                <textarea name="conteudo" rows="2" class="w-full border rounded p-2" placeholder="Escreva um comentário..."></textarea>
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded mt-2 h-10">Comentar</button>
+                </div>
+            </form>
+        {% else %}
+            <p class="text-gray-500">Faça login para comentar.</p>
+        {% endif %}
+    </div>
+
+    <h2 class="text-lg font-bold mt-6 mb-2">Comentários</h2>
+    <ul>
+        {% for comentario in artigo.comentarios.all %}
+            <li class="mb-2 border-b pb-2">
+                <strong>{{ comentario.autor.username }}</strong>: {{ comentario.conteudo }}
+                <span class="text-xs text-gray-400">{{ comentario.data_criacao|date:"d/m/Y H:i" }}</span>
+            </li>
+        {% empty %}
+            <li class="text-gray-500">Nenhum comentário ainda.</li>
+        {% endfor %}
+    </ul>
 </div>
 {% endblock %}
