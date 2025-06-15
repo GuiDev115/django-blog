@@ -28,5 +28,7 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('register/', views.register, name='register'),
 
-    
+    # URLs de solicitações
+    path('solicitacoes_redator/', views.solicitacoes_redator, name='solicitacoes_redator'),
+    path('solicitacoes_artigo/', views.solicitacoes_artigo, name='solicitacoes_artigo'),
 ]
