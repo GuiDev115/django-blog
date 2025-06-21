@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import Artigo, Usuario
 from .models import Categoria
 
+# Essa classe é responsável por criar o formulário de criação de artigos
 class ArtigoForm(forms.ModelForm):
     class Meta:
         model = Artigo
@@ -13,6 +14,7 @@ class ArtigoForm(forms.ModelForm):
             'categorias': forms.CheckboxSelectMultiple(),
         }
 
+# Essa classe é responsável por criar o formulário de registro de usuários
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
     
@@ -27,6 +29,7 @@ class CustomUserCreationForm(UserCreationForm):
             user.save()
         return user
 
+# Essa classe é responsável por criar o formulário de categorias
 class CategoriaForm(forms.ModelForm):
     class Meta:
         model = Categoria

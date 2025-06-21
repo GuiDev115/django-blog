@@ -4,6 +4,8 @@ from . import views
 urlpatterns = [
     # URLs principais
     path('', views.index, name='index'),
+
+    # URL de artigo
     path('artigos/', views.artigo_list, name='artigo_list'),
     path('artigo/<int:pk>/', views.artigo_detail, name='artigo_detail'),
     path('artigo/novo/', views.artigo_create, name='artigo_create'),

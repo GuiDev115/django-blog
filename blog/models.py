@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.utils import timezone
 
 
+# Classe do usuario
 class Usuario(AbstractUser):
     """
     Modelo personalizado de usuário com campo para tipo de usuário
@@ -52,6 +53,7 @@ class Usuario(AbstractUser):
         verbose_name_plural = 'Usuários'
 
 
+# Classe para solicitar um model para o usuario se tornar redator
 class SolicitacaoRedator(models.Model):
     """
     Modelo para representar solicitações de usuários para se tornarem redatores
@@ -87,6 +89,7 @@ class SolicitacaoRedator(models.Model):
         verbose_name = 'Solicitação de Redator'
         verbose_name_plural = 'Solicitações de Redator'
 
+# Classe para solicitacao de artigo
 class SolicitacaoArtigo(models.Model):
     """
     Modelo para representar solicitações de criação de artigos por usuários
@@ -105,7 +108,7 @@ class SolicitacaoArtigo(models.Model):
         related_name='solicitacoes_artigo_aprovadas'
     )
 
-    def aprovar(self, admin_usuario):
+    def aprovar(self, admin_usuario): # Funcao para aprovar o artigo
         """
         Método para aprovar uma solicitação de artigo
         """

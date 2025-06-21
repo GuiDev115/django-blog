@@ -45,11 +45,12 @@ git clone https://github.com/seu-usuario/django-blog.git
 cd django-blog
 ```
 
-### 2. Crie e ative um ambiente virtual
+### 2. Crie e ative um ambiente virtual, e instale as depedencias
 
 ```bash
 python3 -m venv venv
 source venv/bin/activate
+pip install -r requirements.txt 
 ```
 
 ### 3. Configure o banco de dados
